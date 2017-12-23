@@ -127,3 +127,28 @@ il faut aller.
 donner la notion d'objectif pourrait être pratique (aller voir le boss
 pas mort le plus proche), donc aller là prioritairement (si ça ne
 passe pas le seuil de difficulté).
+
+Algo général :
+
+Les objectifs sont G4+MB
+
+Zone courante + objectifs triés par difficulté (objectif infaisable =
+difficulté infinie)
+
+Chaque objectif est situé dans une zone que l'on doit donc
+atteindre. Chaque fois que l'on est dans une zone, on cherche à
+prendre tous les items dispos dans le coin (majors ou minors) jusqu'à
+ce que les conditions enoughMajors/enoughMinors soient atteintes.
+
+Si aucun objectif n'est faisable ou difficulté trop importante on
+cherche juste à récupérer les items jusqu'à ce que ça débloque la
+situation.
+
+Si on a récupéré tous les items possibles et que les objectifs
+sont toujours infaisables => bloqué, seed non faisable
+
+Si on a récupéré tous les items possibles et que les objectifs
+sont au-dessus du seuil de difficulté souhaité, on bypass le
+seuil et on continue.
+
+
