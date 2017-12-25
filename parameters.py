@@ -51,10 +51,11 @@ class Knows:
     SpeedZebSkip = (False, 0) # change minimal ammo count
 
     # Area difficulties
-
-    # Brinstar
+    
+    # Crateria/Brinstar
     CeilingDBoost = (True, easy) # for brinstar ceiling
     AlcatrazEscape = (True, harder) # alcatraz without bomb
+    TerminatorSpark = (True, hard) # access terminator with only speed booster
     ReverseGateGlitch = (True, medium) # ETank in Brinstar Gate
     EarlyKraid = (True, easy) # to access kraid without hi jump boots
     XrayDboost = (False, 0)  # Xray without grapple or space jump
@@ -75,7 +76,8 @@ class Knows:
     LavaDive = (True, harder) # ridley without gravity
     WorstRoomIceCharge = (True, mania) # can pass worst room JUST by freezing pirates
     WorstRoomHiJump = (True, hard) # can go up worst room with HiJump and wall jumps
-
+    ScrewAttackExit = (True, hard) # exit screw attack area by jumping from energy refill room (w/ HiJump, SpeedBooster and ScrewAttack)
+    
     # wrecked ship
     ContinuousWallJump = (False, 0) # access wrecked ship
     DiagonalBombJump = (True, mania) # access wrecked ship
@@ -84,6 +86,7 @@ class Knows:
     SpongeBathBombJump = (True, mania)
     SpongeBathHiJump = (True, easy)
     SpongeBathSpeed = (True, medium)
+    JumpToWsEtank = (True, medium) # get to WS Etank without anything, just by jumping
 
     # maridia
     # suitless

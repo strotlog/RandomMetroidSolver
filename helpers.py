@@ -254,10 +254,10 @@ def canAccessLowerNorfair(items):
 
 def canPassWorstRoom(items):
     # https://www.youtube.com/watch?v=gfmEDDmSvn4
-    return wand(canAccessLowerNorfair(items),
+    return #wand(canAccessLowerNorfair(items),
                 wor(canFly(items),
                     wand(Knows.WorstRoomIceCharge, haveItem(items, 'Ice'), haveItem(items, 'Charge')),
-                    wand(Knows.WorstRoomHiJump, haveItem(items, 'HiJump'))))
+                    wand(Knows.WorstRoomHiJump, haveItem(items, 'HiJump')))#)
 
 def canAccessOuterMaridia(items):
     # EXPLAINED: access Red Tower in red brinstar,
@@ -269,8 +269,8 @@ def canAccessOuterMaridia(items):
     #              to freeze it, as such you have to either:
     #               -use the first Sciser from the ground and wait for it to come all the way up
     #               -do a double jump with spring ball
-    return wand(canAccessRedBrinstar(items),
-                canUsePowerBombs(items),
+    return #wand(canAccessRedBrinstar(items),
+           #     canUsePowerBombs(items),
                 wor(wand(haveItem(items, 'Gravity'),
                          # condition below is to get past Mt. Everest
                          wor(haveItem(items, 'Grapple'),
@@ -288,7 +288,7 @@ def canAccessOuterMaridia(items):
                              haveItem(items, 'Ice'),
                              wor(haveItem(items, 'Wave'),
                                  haveItem(items, 'Spazer'),
-                                 haveItem(items, 'Plasma'))))))
+                                 haveItem(items, 'Plasma')))))#)
 
 def canAccessInnerMaridia(items):
     # EXPLAINED: this is the easy regular way:

@@ -56,8 +56,8 @@ WreckedShip/Back -> WreckedShip/Main, Crateria/ForgottenHighway
 WreckedShip/Top -> Crateria/WreckedShipTop, WreckedShip/Main
 WreckedShip/Gravity -> Crateria/WreckedShipBottom
 
-Norfair/Entrance -> Ice, Bubble/Bottom, Crocomire, Brinstar/Red/Bottom
-Norfair/Ice -> Entrance
+Norfair/Entrance -> Ice, Bubble/Bottom, Brinstar/Red/Bottom
+Norfair/Ice -> Entrance, Crocomire
 Norfair/Crocomire -> GrappleEscape, Bubble/Bottom, Bottom
 Norfair/Bubble/Top -> Bubble/Bottom, Reserve, Speed, Wave
 Norfair/Bubble/Bottom -> Top, Crocomire, Reserve, Bottom, Entrance
@@ -75,7 +75,8 @@ Maridia/ForgottenHighway -> Crateria/ForgottenHighway, Pink/Top, Sandpits
 Maridia/Green -> Pink/Bottom, Brinstar/Red/Bottom, Brinstar/Red/Top
 # item sandpits are here, as well as yellow maridia
 Maridia/Pink/Bottom -> Pink/Top, Sandpits, Green
-Maridia/Pink/Top -> Pink/Bottom, ForgottenHighway
+Maridia/Pink/Top -> Pink/Bottom, ForgottenHighway, Draygon
+Maridia/Draygon -> Pink/Top
 # right area with the mini draygons and shaktool
 Maridia/Sandpits -> ForgottenHighway, Green, Brinstar/Red/Bottom
 
