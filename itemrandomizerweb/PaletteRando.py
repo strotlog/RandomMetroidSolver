@@ -110,6 +110,7 @@ class PaletteRando(object):
 
         self.max_degree = settings["max_degree"]
         self.min_degree = settings["min_degree"]
+        self.invert = settings["invert"]
 
         #boss_tileset_palettes = [0x213510,0x213798,0x213A2C,0x213BC1]
         #boss_pointer_addresses = [0x7E792,0x7E79B,0x7E7A4,0x7E726]
@@ -177,8 +178,10 @@ class PaletteRando(object):
         #[sporespawn,kraid,phantoon,botwoon,draygon,crocomire,bomb-torizo,gold-torizo,ridley,mbrain]
 
         #Draygon, Kraid, Crocomire and Mother Brain have seperate colors hidden in tileset palettes which are addressed in the boss shift function
-        self.spore_spawn_palettes = [0x12E359,0x12E3D9]
-        self.spore_spawn_length = [0x3F,0x8F]
+        #self.spore_spawn_palettes = [0x12E359,0x12E3D9]
+        #self.spore_spawn_length = [0x3F,0x8F]
+        self.spore_spawn_palettes = [0x12E359]
+        self.spore_spawn_length = [0x3F]
         self.kraid_palettes = [0x138687,0x13B3F3,0x13B533,0x13AAB0,0x1386C7]
         self.kraid_length = [0x1F,0x8F,0x7F,0x03,0x0F]
         self.phantoon_palettes = [0x13CA01,0x13CB41]
@@ -387,17 +390,17 @@ class PaletteRando(object):
     def generate_tileset_degrees(self):
         for count in range(17):
             if count in (3,9,10,11,12,13,14,15,16):
-                degree = random.randint(self.min_degree, self.max_degree)
+                degree = self.getDegree()
                 self.degree_list.append(degree)
             else:
-                degree = random.randint(self.min_degree, self.max_degree)
+                degree = self.getDegree()
                 self.degree_list.append(degree)
                 self.degree_list.append(degree)
 
     def generate_boss_degrees(self):
         #[sporespawn,kraid,phantoon,botwoon,draygon,crocomire,bomb-torizo,gold-torizo,ridley,mbrain]
         for count in range(11):
-            degree = random.randint(self.min_degree, self.max_degree)
+            degree = self.getDegree()
             self.boss_degree_list.append(degree)
 
     def hue_shift_palette_lists(self, degree, address_list, size_list):
@@ -565,8 +568,19 @@ class PaletteRando(object):
             self.compress(insert_address, data)
         return
 
-    def boss_palette_shift(self):
-        if self.settings["match_room_shift_with_boss"]:
+    def boss_palette_shift(self, degree):
+        if self.settings["global_shift"] == True:
+            self.hue_shift_palette_lists(degree, self.spore_spawn_palettes, self.spore_spawn_length)
+            self.hue_shift_palette_lists(degree, self.kraid_palettes, self.kraid_length)
+            self.hue_shift_palette_lists(degree, self.phantoon_palettes, self.phantoon_length)
+            self.hue_shift_palette_lists(degree, self.botwoon_palettes, self.botwoon_length)
+            self.hue_shift_palette_lists(degree, self.draygon_palettes, self.draygon_length)
+            self.hue_shift_palette_lists(degree, self.crocomire_palettes, self.crocomire_length)
+            self.hue_shift_palette_lists(degree, self.bomb_torizo_palettes, self.bomb_torizo_length)
+            self.hue_shift_palette_lists(degree, self.gold_torizo_palettes, self.gold_torizo_length)
+            self.hue_shift_palette_lists(degree, self.ridley_palettes, self.ridley_length)
+            self.hue_shift_palette_lists(degree, self.mbrain_palettes, self.mbrain_length)
+        elif self.settings["match_room_shift_with_boss"]:
             self.hue_shift_palette_lists(self.degree_list[6], self.spore_spawn_palettes, self.spore_spawn_length)
             self.hue_shift_palette_lists(self.degree_list[22], self.kraid_palettes, self.kraid_length)
             self.hue_shift_palette_lists(self.degree_list[4], self.phantoon_palettes, self.phantoon_length)
@@ -602,24 +616,27 @@ class PaletteRando(object):
             #kraid's room tileset sub-palettes containing boss colors
             if address == 0x213510 or (self.settings["shift_tileset_palette"] and address == self.pointers_to_insert[22]):
                 temp_TLS_palette_subsets = [0xE0]
-                if self.settings["match_room_shift_with_boss"]:
-                    degree = self.degree_list[22]
-                else:
-                    degree = self.boss_degree_list[1]                
+                if self.settings["global_shift"] == False:
+                    if self.settings["match_room_shift_with_boss"]:
+                        degree = self.degree_list[22]
+                    else:
+                        degree = self.boss_degree_list[1]                
             #mother brain's room tileset sub-palettes containing boss colors
             if address == 0x213BC1 or (self.settings["shift_tileset_palette"] and address == self.pointers_to_insert[14]):
                 temp_TLS_palette_subsets = [0x80]
-                if self.settings["match_room_shift_with_boss"]:
-                    degree = self.degree_list[14]
-                else:
-                    degree = self.boss_degree_list[9]    
+                if self.settings["global_shift"] == False:
+                    if self.settings["match_room_shift_with_boss"]:
+                        degree = self.degree_list[14]
+                    else:
+                        degree = self.boss_degree_list[9]    
             #draygon's room tileset sub-palettes containing boss colors
             if address == 0x213A2C or (self.settings["shift_tileset_palette"] and address == self.pointers_to_insert[24]):
                 temp_TLS_palette_subsets = [0xA0]
-                if self.settings["match_room_shift_with_boss"]:
-                    degree = self.degree_list[24]
-                else:
-                    degree = self.boss_degree_list[4]
+                if self.settings["global_shift"] == False:
+                    if self.settings["match_room_shift_with_boss"]:
+                        degree = self.degree_list[24]
+                    else:
+                        degree = self.boss_degree_list[4]
 
             data = self.decompress(address)
 
@@ -677,16 +694,34 @@ class PaletteRando(object):
                     else:
                         insert_address= 0x2FE050 + (2*0x100)
                     self.compress(insert_address, data)
-                    self.write_pointer(self.pointer_addresses[4], self.pc_to_snes(insert_address))
+                    self.write_pointer(self.pointer_addresses[24], self.pc_to_snes(insert_address))
             else:        
                 #Recompress palette and re-insert at offset
                 self.compress(insert_address, data)
 
-    def randomize(self):
-        degree = random.randint(self.min_degree, self.max_degree)
+    def getDegree(self):
+        if self.invert == True:
+            # use [0-360] range for easier calculations
+            minDegree = self.min_degree + 180
+            maxDegree = self.max_degree + 180
+            excludeRange = maxDegree - minDegree
 
-        self.generate_tileset_degrees()
-        self.generate_boss_degrees()
+            rand = random.randint(0, 360 - excludeRange)
+
+            if rand > minDegree:
+                rand += excludeRange
+            rand -= 180
+
+            return rand
+        else:
+            return random.randint(self.min_degree, self.max_degree)
+
+    def randomize(self):
+        degree = self.getDegree()
+
+        if self.settings["global_shift"] == False:
+            self.generate_tileset_degrees()
+            self.generate_boss_degrees()
 
         if self.settings["shift_tileset_palette"]:
             self.hue_shift_tileset_palette(degree)
@@ -733,21 +768,21 @@ class PaletteRando(object):
 
         #this NEEDS to be called after the tileset palette shift function (if tileset shift actually gets called) because it references newly created pointers
         if self.settings["shift_boss_palettes"]:
-            self.boss_palette_shift()
+            self.boss_palette_shift(degree)
 
         if self.settings["shift_enemy_palettes"]:
             if self.settings["seperate_enemy_palette_groups"]:
-                enemy_degree = random.randint(self.min_degree, self.max_degree)
+                enemy_degree = self.getDegree()
                 self.hue_shift_palette_lists(enemy_degree, self.metroid_palettes, [0x0F,0x0F,0x0F,0x0F])
                 self.hue_shift_palette_lists(enemy_degree, self.various_metroid_palettes, self.various_metroid_length)
-                enemy_degree = random.randint(self.min_degree, self.max_degree)
+                enemy_degree = self.getDegree()
                 self.hue_shift_palette_lists(enemy_degree, self.desgeega_palettes, [0x0F,0x0F])
-                enemy_degree = random.randint(self.min_degree, self.max_degree)
+                enemy_degree = self.getDegree()
                 self.hue_shift_palette_lists(enemy_degree, self.sidehopper_palettes, [0x0F,0x0F])
-                enemy_degree = random.randint(self.min_degree, self.max_degree)
+                enemy_degree = self.getDegree()
                 self.hue_shift_palette_lists(enemy_degree, self.animal_palettes, [0x0F,0x0F,0x0F,0x0F])
                 for address in self.enemy_palettes:
-                    enemy_degree = random.randint(self.min_degree, self.max_degree)
+                    enemy_degree = self.getDegree()
                     self.hue_shift_fixed_size_palette(address, enemy_degree, 0x0F)
             else:
                 self.enemy_palettes.extend(self.metroid_palettes)
@@ -757,13 +792,13 @@ class PaletteRando(object):
                 if self.settings["global_shift"] == True:
                     enemy_degree = degree
                 else:
-                    enemy_degree = random.randint(self.min_degree, self.max_degree)
+                    enemy_degree = self.getDegree()
                 self.hue_shift_palette_lists(enemy_degree, self.various_metroid_palettes, self.various_metroid_length)
                 for address in self.enemy_palettes:
                     if self.settings["global_shift"] == True:
                         enemy_degree = degree
                     else:
-                        enemy_degree = random.randint(self.min_degree, self.max_degree)
+                        enemy_degree = self.getDegree()
                     self.hue_shift_fixed_size_palette(address, enemy_degree, 0x0F)
 
         self.logger.debug("degree_list: {}".format(self.degree_list))
@@ -772,7 +807,7 @@ class PaletteRando(object):
             if self.settings["global_shift"] == True:
                 beam_degree = degree
             else:
-                beam_degree = random.randint(self.min_degree, self.max_degree)
+                beam_degree = self.getDegree()
             self.hue_shift_palette_lists(beam_degree, self.beam_palettes, self.beam_palettes_length)
             self.hue_shift_palette_lists(beam_degree, self.wave_beam_trail_palettes, self.wave_beam_trail_length)
             self.hue_shift_palette_lists(beam_degree, self.grapple_beam_palettes, self.grapple_beam_length)
@@ -785,14 +820,14 @@ class PaletteRando(object):
                     if self.settings["global_shift"] == True:
                         ship_degree = degree
                     else:
-                        ship_degree = random.randint(self.min_degree, self.max_degree)
+                        ship_degree = self.getDegree()
                 self.hue_shift_fixed_size_palette(self.ship_palette, ship_degree, 0x0F)
 
         if self.settings["shift_suit_palettes"]:
             if self.settings["global_shift"] == True:
                 base_degree = degree
             else:
-                base_degree = random.randint(self.min_degree, self.max_degree)
+                base_degree = self.getDegree()
 
             for address in self.power_palette_offsets:
                 self.hue_shift_fixed_size_palette(address, base_degree, 0x0F, [0x04])
@@ -800,19 +835,19 @@ class PaletteRando(object):
             if self.settings["match_ship_and_power"]:
                 ship_degree = base_degree
             else:
-                ship_degree = random.randint(self.min_degree, self.max_degree)
+                ship_degree = self.getDegree()
 
             if self.settings["shift_ship_palette"]:
                 self.hue_shift_fixed_size_palette(self.ship_palette, ship_degree, 0x0F)
 
             if self.settings["individual_suit_shift"]:
-                degree = random.randint(self.min_degree, self.max_degree)
+                degree = self.getDegree()
 
             for address in self.varia_palette_offsets:
                 self.hue_shift_fixed_size_palette(address, degree, 0x0F, [0x04])
 
             if self.settings["individual_suit_shift"]:
-                degree = random.randint(self.min_degree, self.max_degree)
+                degree = self.getDegree()
 
             for address in self.gravity_palette_offsets:
                 self.hue_shift_fixed_size_palette(address, degree, 0x0F, [0x04])    
