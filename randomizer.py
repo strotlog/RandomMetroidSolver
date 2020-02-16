@@ -17,7 +17,7 @@ import log, db
 speeds = progSpeeds + ['variable']
 energyQties = ['sparse', 'medium', 'vanilla' ]
 progDiffs = ['easier', 'normal', 'harder']
-morphPlacements = ['early', 'late', 'normal']
+morphPlacements = ['early', 'late', 'normal', 'classic']
 majorsSplits = ['Full', 'Major', 'Chozo']
 
 def dumpErrorMsg(outFileName, msg):

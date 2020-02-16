@@ -1137,7 +1137,7 @@ Tournament presets:<ul>\
     {
       element: "#morphPlacementStep",
       title: "Morph Placement",
-      content: "<p>Influences where VARIA will place Morphing Ball :<ul><li><b>early</b> (default): Morph will be placed as soon as possible</li><li><b>normal</b>: Morph will be placed randomly</li><li><b>late</b>: Prevents Morph to be placed in the first available locations of the game. Best suited when used along area randomization, to find Morph in peculiar places.<br/><b>Warning: </b>In Chozo Majors Split, or when using a non-standard or randomized start location, <b>late</b> will be replace by <b>normal</b></li></ul></p><p>Click on the dice button to randomly set this parameter.</p>"
+      content: "<p>Influences where VARIA will place Morphing Ball :<ul><li><b>early</b> (default): Morph will be placed as soon as possible</li><li><b>normal</b>: Morph will be placed randomly</li><li><b>classic</b>: Avoids placing Speed Booster and Screw Attack when Morph can be placed to open a new location</li><li><b>late</b>: Prevents Morph to be placed in the first available locations of the game. Best suited when used along area randomization, to find Morph in peculiar places.<br/><b>Warning: </b>In Chozo Majors Split, or when using a non-standard or randomized start location, <b>late</b> will be replace by <b>normal</b></li></ul></p><p>Click on the dice button to randomly set this parameter.</p>"
     },
     {
       element: "#suitsRestrictionStep",
@@ -1621,7 +1621,7 @@ def displayNumber(id, min, max, default, step="1"):
 	      <tr id="morphPlacementVisibility">
 		<td class="small"><div class="random"><button id="morphPlacementRandom" type="button" onclick="randomize(event, 'morphPlacement')" class="small"><span class="small dice_rotate">&#x2684;</span></button></div></td>
 	        <td class="half"><span id="morphPlacementText">Morph Placement:</span></td>
-	        <td class="half">{{displaySelect("morphPlacement", ["early", "normal", "late"], "normal")}}</td>
+	        <td class="half">{{displaySelect("morphPlacement", ["early", "normal", "late", "classic"], "normal")}}</td>
                 <td id="morphPlacementStep"><button type="button" onclick="startTheTour(10)">?</button></td>
 	      </tr>
 	      <tr id="suitsRestrictionVisibility">

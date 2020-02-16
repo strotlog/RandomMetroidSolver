@@ -1041,6 +1041,15 @@ class Randomizer(object):
             morph = next((item for item in items if Randomizer.isMorph(item)), None)
             if morph is not None:
                 return morph
+        # 'classic' morph - any location/area, 100% prefer morph as prog over
+        #                   speed as prog or screw as prog
+        # (related to past versions, where 'early' morph guaranteed morph in
+        #  blue brinstar simply by preventing speed and screw from being there)
+        if self.restrictions['Morph'] == 'classic':
+            morph = next((item for item in items if Randomizer.isMorph(item)), None)
+            if morph is not None:
+                # remove speed/screw as choices before choosing an item
+                items = [item for item in items if item['Type'] not in ['ScrewAttack', 'SpeedBooster']]
         random.shuffle(items)
         item = self.getChooseFunc(self.chooseItemRanges, self.chooseItemFuncs)(items)
         if item is None:

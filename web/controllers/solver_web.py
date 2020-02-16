@@ -1121,8 +1121,8 @@ def validateWebServiceParams(switchs, quantities, others, isJson=False):
             raiseHttp(400, "Wrong value for progressionDifficulty: {}, authorized values easier/normal/harder".format(request.vars['progressionDifficulty']), isJson)
 
     if 'morphPlacement' in others:
-        if request.vars['morphPlacement'] not in ['early', 'late', 'normal', 'random']:
-            raiseHttp(400, "Wrong value for morphPlacement: {}, authorized values early/late/normal".format(request.vars['morphPlacement']), isJson)
+        if request.vars['morphPlacement'] not in ['early', 'late', 'normal', 'classic', 'random']:
+            raiseHttp(400, "Wrong value for morphPlacement: {}, authorized values early/late/normal/classic".format(request.vars['morphPlacement']), isJson)
 
     if request.vars.minorQty not in ['random', None]:
         minorQtyInt = getInt('minorQty', isJson)
